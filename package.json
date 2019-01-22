@@ -1,0 +1,29 @@
+{
+  "name": "chatbotintegration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erictansh/chatbotintegration.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erictansh/chatbotintegration/issues"
+  },
+  "homepage": "https://github.com/erictansh/chatbotintegration#readme",
+  "dependencies": {
+    "actions-on-google": "^2.5.0",
+    "body-parser": "^1.18.3",
+    "dialogflow-fulfillment": "^0.6.1",
+    "eps": "^0.1.0",
+    "express": "^4.16.4",
+    "firebase-admin": "^6.5.0",
+    "firebase-functions": "^2.1.0"
+  }
+}
