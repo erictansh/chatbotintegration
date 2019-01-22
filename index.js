@@ -2,12 +2,18 @@
 // for Dialogflow fulfillment library docs, samples, and to report issues
 'use strict';
  
+const express = require('express');
+const bodyParser = require('body-parser');
 const functions = require('firebase-functions');
-const {WebhookClient} = require('dialogflow-fulfillment');
-const {Card, Suggestion} = require('dialogflow-fulfillment');
- 
+const admin = require('firebase-admin');
+const {WebhookClient, Card, Suggestion} = require('dialogflow-fulfillment');
+const {dialogflow} = require('actions-on-google');
+
+const app = dialogflow();
+
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
  
+
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
   const agent = new WebhookClient({ request, response });
   console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
@@ -20,7 +26,11 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   function fallback(agent) {
     agent.add(`I didn't understand`);
     agent.add(`I'm sorry, can you try again?`);
-}
+  }
+
+  function testImage(agent) {
+      agent.add('I am alive!!');
+  }
 
   // // Uncomment and edit to make your own intent handler
   // // uncomment `intentMap.set('your intent name here', yourFunctionHandler);`
@@ -55,7 +65,16 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
+  intentMap.set('GetImageDetail', testImage);
   // intentMap.set('your intent name here', yourFunctionHandler);
   // intentMap.set('your intent name here', googleAssistantHandler);
   agent.handleRequest(intentMap);
+});
+
+const exapp = express().use(bodyParser.json());
+exapp.post('/fulfillment', app.dialogflowFirebaseFulfillment());
+
+var listener = app.listen(process.env.PORT || 4000, process.env.IP, function(){
+	console.log("server has started");
+	console.log('Listening on port ' + listener.address().port);
 });
