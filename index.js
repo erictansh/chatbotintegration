@@ -14,7 +14,7 @@ const app = dialogflow();
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
  
 
-exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
+app.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
   const agent = new WebhookClient({ request, response });
   console.log('Dialogflow Request headers: ' + JSON.stringify(request.headers));
   console.log('Dialogflow Request body: ' + JSON.stringify(request.body));
@@ -72,9 +72,9 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
 });
 
 const exapp = express().use(bodyParser.json());
-exapp.post('/fulfillment', app.dialogflowFirebaseFulfillment());
+exapp.post('/fulfillment', app.dialogflowFirebaseFulfillment);
 
-var listener = app.listen(process.env.PORT || 4000, process.env.IP, function(){
+var listener = exapp.listen(process.env.PORT || 4000, process.env.IP, function(){
 	console.log("server has started");
 	console.log('Listening on port ' + listener.address().port);
 });
